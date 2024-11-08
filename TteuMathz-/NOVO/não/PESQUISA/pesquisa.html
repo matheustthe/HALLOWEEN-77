@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site de Músicas</title>
+    <style>
+        /* Resetando margens e padding */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Corpo da página */
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #121212;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: #2168ff; /* Cor do Spotify */
+            text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Estilo para o link "VOLTAR" */
+        a {
+            display: inline-block;
+            padding: 10px 20px;
+            margin: 20px 0;
+            text-decoration: none;
+            font-size: 1.2rem;
+            color: white;
+            background-color: #0c89ff; /* Cor de fundo do botão */
+            border-radius: 5px;
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        a:hover {
+            background-color: #1DB954; /* Cor quando passar o mouse */
+            transform: scale(1.05); /* Aumenta o botão ao passar o mouse */
+        }
+
+        a:focus {
+            outline: none;
+        }
+
+        /* Caixa de pesquisa */
+        .search-container {
+            width: 80%;
+            max-width: 500px;
+            position: relative;
+            margin-bottom: 40px;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 15px;
+            font-size: 18px;
+            background-color: #333;
+            border: none;
+            border-radius: 50px;
+            color: #fff;
+            outline: none;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            transition: background-color 0.3s;
+        }
+
+        .search-box:focus {
+            background-color: #444;
+        }
+
+        .search-box::placeholder {
+            color: #bbb;
+        }
+
+        /* Lista de músicas */
+        .music-list {
+            width: 80%;
+            max-width: 600px;
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+            overflow-y: auto;
+            max-height: 400px;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        /* Estilo dos itens da lista */
+        .music-item {
+            background-color: #222;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+        }
+
+        /* Hover dos itens */
+        .music-item:hover {
+            background-color: #333;
+            transform: scale(1.03);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+        }
+
+        .music-item span {
+            font-weight: 500;
+            font-size: 1.2rem;
+            color: #ddd;
+        }
+
+        .music-item .artist {
+            color: #888;
+            font-size: 1rem;
+        }
+
+        .music-item .play-icon {
+            font-size: 24px;
+            color: #0c89ff;
+        }
+
+        /* Barra de rolagem personalizada */
+        .music-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .music-list::-webkit-scrollbar-thumb {
+            background-color: #444;
+            border-radius: 10px;
+        }
+
+        .music-list::-webkit-scrollbar-thumb:hover {
+            background-color: #666;
+        }
+
+    </style>
+</head>
+<body>
+    <a href="../inicial/emAlta.html">VOLTAR</a>
+    <h1>Pesquisa de Músicas</h1>
+
+    <!-- Caixa de Pesquisa -->
+    <div class="search-container">
+        <input type="text" id="searchBox" class="search-box" placeholder="Pesquise uma música..." onkeyup="searchMusic()">
+    </div>
+
+    <!-- Lista de Músicas -->
+    <ul id="musicList" class="music-list">
+        <li class="music-item">
+            <span>Bohemian Rhapsody</span>
+            <span class="artist">Queen</span>
+            <span class="play-icon">▶️</span>
+        </li>
+        <li class="music-item">
+            <span>Shape of You</span>
+            <span class="artist">Ed Sheeran</span>
+            <span class="play-icon">▶️</span>
+        </li>
+        <li class="music-item">
+            <span>Blinding Lights</span>
+            <span class="artist">The Weeknd</span>
+            <span class="play-icon">▶️</span>
+        </li>
+        <li class="music-item">
+            <span>Billie Jean</span>
+            <span class="artist">Michael Jackson</span>
+            <span class="play-icon">▶️</span>
+        </li>
+        <li class="music-item">
+            <span>Rolling in the Deep</span>
+            <span class="artist">Adele</span>
+            <span class="play-icon">▶️</span>
+        </li>
+        <li class="music-item">
+            <span>Let It Be</span>
+            <span class="artist">The Beatles</span>
+            <span class="play-icon">▶️</span>
+        </li>
+        <li class="music-item">
+            <span>Smells Like Teen Spirit</span>
+            <span class="artist">Nirvana</span>
+            <span class="play-icon">▶️</span>
+        </li>
+    </ul>
+
+    <script>
+        // Função para filtrar músicas de acordo com o que foi digitado
+        function searchMusic() {
+            const input = document.getElementById("searchBox").value.toLowerCase(); // Pegando o valor digitado
+            const musicList = document.getElementById("musicList"); // Pegando a lista de músicas
+            const musicItems = musicList.getElementsByTagName("li"); // Pegando todos os itens da lista
+
+            // Loop para verificar se o nome da música contém o termo de pesquisa
+            for (let i = 0; i < musicItems.length; i++) {
+                let musicName = musicItems[i].getElementsByTagName("span")[0].textContent.toLowerCase(); // Pegando o nome da música
+                if (musicName.includes(input)) {
+                    musicItems[i].style.display = ""; // Exibe a música se o nome corresponder
+                } else {
+                    musicItems[i].style.display = "none"; // Esconde a música caso não corresponda
+                }
+            }
+        }
+    </script>
+
+</body>
+</html>
